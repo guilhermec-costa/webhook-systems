@@ -1,5 +1,3 @@
-const { DatabaseSync } = require("node:sqlite");
-
 class WebhookManager {
     /** @type {WebhookManager} instance - singleton instance */
     static instance;
@@ -8,11 +6,13 @@ class WebhookManager {
     #configuredWebhooks;
 
     static get() {
-        if (WebhookManager.instance) {
+        if (!WebhookManager.instance) {
             WebhookManager.instance = new WebhookManager();
         }
         return WebhookManager.instance;
     }
+
+    constructor() {}
 
     /**
      * 
@@ -24,18 +24,6 @@ class WebhookManager {
      * }}
      */
     registerWebhook(trigger, destinationEndpoint) {
-        const eventStore = this.#configuredWebhooks.get(trigger);
-        const previousConfigured = eventStore.filter((target) => target === destinationEndpoint);
-        if (previousConfigured) {
-            return {
-                err: `"${destinationEndpoint}" is already configured for event of type ${trigger.toString()}`,
-                success: false,
-            }
-        }
-        eventStore.push(destinationEndpoint);
-        return {
-            success: true,
-        }
     }
 }
 

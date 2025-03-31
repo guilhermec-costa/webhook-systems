@@ -1,7 +1,9 @@
+/** @typedef {import("./types").OrderService} OrderService */
 const OrderRepository = require("../infra/orderRepository");
 
+/** @type {OrderService} */
 class OrderService {
-    /** @type {import('../types').OrderService} instance - singleton instance */
+    /** @type {OrderService} */
     static instance;
 
     /** @type {OrderRepository} orderRepo */
@@ -12,16 +14,14 @@ class OrderService {
     }
 
     static get() {
-        if (OrderService.instance) {
+        if (!OrderService.instance) {
             OrderService.instance = new OrderService();
         }
         return OrderService.instance;
     }
 
-    constructor() { }
-
     listOrders() {
-        this.#orderRepository.createOne
+        return this.#orderRepository.listOrders();
     }
 }
 

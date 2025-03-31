@@ -18,4 +18,4 @@ class Order {
     }
 }
 
-modules.export = Order;
+module.exports = Order;

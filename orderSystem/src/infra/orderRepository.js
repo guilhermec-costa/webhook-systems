@@ -1,37 +1,38 @@
-/** @typedef {import("../types").OrderService} OrderService */
-const sqlite = require("node:sqlite");
+/** @typedef {import("../types").OrderRepository } OrderService */
 
-/** @type {OrderService} */
+const Order = require("../models/Order");
+const DatabaseSingleton = require("./sqliteConfig");
+
+/** @type {OrderRepository} */
 class OrderRepository {
     /** @type {OrderRepository} instance - singleton instance */
     static instance;
 
     static get() {
-        if (OrderRepository.instance) {
+        if (!OrderRepository.instance) {
             OrderRepository.instance = new OrderRepository();
         }
         return OrderRepository.instance;
     }
 
-    /* @type {sqlite.DatabaseSync} instance - singleton instance */
+    /** @type {DatabaseSingleton} instance - singleton instance */
     #db;
 
     /**
-     * @param {sqlite.DatabaseSync} db 
+     * @param {sqlite.Database} db 
      * */
-    constructor(db) {
-        this.#db = db;
+    constructor() {
+        this.#db = DatabaseSingleton.get();
     }
 
     /** @param {Order} order - the order to create */
     createOne(order) {
     }
    
-    /** @returns {Order} */
+    /** @returns {Order[]} */
     listOrders() {
-        return [
-            new Order()
-        ]
+        const order = new Order();
+        return [order];
     }
 }
 
