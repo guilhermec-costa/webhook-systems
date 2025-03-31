@@ -1,14 +1,10 @@
 const { DatabaseSync } = require("node:sqlite");
+
 class WebhookManager {
-
-
-    /**
-     * @type {WebhookManager} instance - singleton instance
-     * */
+    /** @type {WebhookManager} instance - singleton instance */
     static instance;
-    /**
-     * @type {Map<OrderEvent, EndpointURL[]}
-    */
+
+    /** @type {Map<OrderEvent, EndpointURL[]} */
     #configuredWebhooks;
 
     static get() {
@@ -42,3 +38,5 @@ class WebhookManager {
         }
     }
 }
+
+module.exports = WebhookManager;

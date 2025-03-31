@@ -2,10 +2,10 @@
     "name": "notificationSystem",
     "version": "1.0.0",
     "description": "",
-    "main": "main.js",
+    "main": "src/main.js",
     "type": "commonjs",
     "scripts": {
-        "dev": "nodemon --watch main.js",
+        "dev": "nodemon --watch src/main.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
