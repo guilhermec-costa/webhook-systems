@@ -1,7 +1,17 @@
-/** @typedef {import("./types").OrderService} OrderService */
-const OrderRepository = require("../infra/orderRepository");
+/** 
+ * @typedef {Object} OrderDTO
+ * @property {string} id 
+ * @property {import("../types").OrderItem[]} items
+ * @property {Date} createdAt 
+ * @property {Date} updatedAt
+ * @property {number} totalPrice 
+ * @property {string} customerId 
+ * @property {string} shippingAddress 
+*/
 
-/** @type {OrderService} */
+const OrderRepository = require("../infra/orderRepository");
+const Order = require("../models/Order");
+
 class OrderService {
     /** @type {OrderService} */
     static instance;
@@ -20,9 +30,35 @@ class OrderService {
         return OrderService.instance;
     }
 
-    listOrders() {
-        return this.#orderRepository.listOrders();
+    /** 
+     * @param {Order} order 
+     * @returns {OrderDTO}
+     * */
+    static toOrderDTO(order) {
+        return {
+            id: order.id,
+            shippingAddress: order.shippingAddress,
+            items: order.items,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt,
+            customerId: order.customerId,
+            totalPrice: order.totalPrice,
+        }
     }
+
+    async list() {
+        const orders = await this.#orderRepository.listOrders();
+        console.log("Retrieved orders: ", orders);
+        return orders.map(OrderService.toOrderDTO);
+    }
+
+
+    /** @param {CreateOrderCommand} orderData */
+    async createOrder(orderData) {
+        const { items, shippingAddress, customerId } = orderData;
+        const id = await this.#orderRepository.createOne(new Order(customerId, shippingAddress, items))
+        return id;
+    };
 }
 
 module.exports = OrderService
